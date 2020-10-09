@@ -72,6 +72,7 @@
 
 <script>
 import MessageLine from './MessageLine.vue';
+import lexSendText from './utils/index';
 
 const MESSAGE_SCHEMA = {
   index: 0,
@@ -85,13 +86,6 @@ export default {
   components: {
     MessageLine,
   },
-  computed: {
-    getTime() {
-      const date = new Date();
-      const hours = date.getHours();
-      return `${hours % 12}:${date.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
-    },
-  },
   data: () => ({
     inputMessage: '',
     MESSAGE_SCHEMA,
@@ -101,41 +95,50 @@ export default {
     this.getReply([
       'Hello',
       'I am Sona, your chat assistant',
-      'How can I help you today?',
     ]);
   },
   methods: {
-    sendMessage() {
+    async sendMessage() {
+      if (!this.inputMessage) {
+        return;
+      }
       if (this.messageGroups[this.messageGroups.length - 1].isSelf) {
         this.messageGroups[this.messageGroups.length - 1].messages.push(this.inputMessage);
       } else {
         this.messageGroups.push({
           ...MESSAGE_SCHEMA,
           index: this.messageGroups.length,
-          time: this.getTime,
+          time: this.getTime(),
           isSelf: true,
           messages: [this.inputMessage],
         });
       }
-      this.scrollToLast();
+      const userMsg = this.inputMessage;
       this.inputMessage = '';
+      this.$nextTick(() => this.scrollToLast());
+      this.getReply([await lexSendText(userMsg)]);
     },
     getReply(messages) {
       if (!this.messageGroups.length || this.messageGroups[this.messageGroups.length - 1].isSelf) {
         this.messageGroups.push({
           ...MESSAGE_SCHEMA,
           index: this.messageGroups.length,
-          time: this.getTime,
+          time: this.getTime(),
           messages: [...messages],
         });
       } else {
         this.messageGroups[this.messageGroups.length - 1].messages.push(...messages);
       }
-      this.scrollToLast();
+      this.$nextTick(() => this.scrollToLast());
     },
     scrollToLast() {
       const scrollSection = document.querySelector('.scroll-section');
       scrollSection.scrollTop = scrollSection.scrollHeight;
+    },
+    getTime() {
+      const date = new Date();
+      const hours = date.getHours();
+      return `${hours % 12}:${date.getMinutes()} ${hours >= 12 ? 'PM' : 'AM'}`;
     },
   },
 };
