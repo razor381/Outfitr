@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-1 bg-blue-700">
-    Selector
+  <div class="flex-1">
+    <!-- Selector -->
   </div>
 </template>
 

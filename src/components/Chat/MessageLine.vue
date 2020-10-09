@@ -20,13 +20,13 @@
       <div class="rounded-full overflow-hidden mr-1 user-pic">
         <img src="@/assets/images/sona.jpg">
       </div>
-      <div class="w-full">
+      <div class="w-full pt-2 font-semibold">
         <div
           :key="index"
           v-for="(message, index) in messages"
           class="flex justify-start"
         >
-          <div class="message-bubble py-3 px-5 mb-1 tracking-tight inline-block">
+          <div class="message-bubble py-3 px-5 mb-1 inline-block">
             {{message}}
           </div>
         </div>
@@ -77,7 +77,7 @@ export default {
   border-radius: 22px 3px 22px 22px;
 }
 .user-pic {
-  max-width: 2rem;
-  max-height: 2rem;
+  max-width: 1.8rem;
+  max-height: 1.8rem;
 }
 </style>

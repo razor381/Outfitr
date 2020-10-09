@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "outfitrfcbb0fee": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "interactions": {
+    "lexe919bfdf": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true
+    }
+  }
+}
